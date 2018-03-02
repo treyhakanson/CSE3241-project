@@ -5,7 +5,7 @@ Requirements:
 1. Python 3
 2. Sqlite3 (on mac if you have [homebrew](http://brew.sh), just run `brew install sql3`)
 
-To start, install pandas:
+To start, install requirements:
 
 ```sh
 pip3 -r install requirements.txt
