@@ -1,3 +1,5 @@
+-- See Checkpoint3.pdf for plain english/relational algebra
+
 -- Query 1
 SELECT first_name || ' ' || last_name, COUNT(*)
     FROM person p
