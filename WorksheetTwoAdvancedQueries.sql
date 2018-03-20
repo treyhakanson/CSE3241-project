@@ -11,6 +11,7 @@ SELECT full_name, SUM(length)
 
 -- 4c
 
+
 -- 4d
 
 -- 4e

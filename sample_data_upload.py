@@ -21,16 +21,17 @@ people = []
 for i in range(100):
     card_number = str(uuid4())
     first, last, *_ = fake.name().split(" ")
+    email = "%s%s%d@gmail.com" % (first.lower(), last.lower(), fake.pyint())
     activation_date = fake.past_datetime(start_date="-1y", tzinfo=None)
-    people.append((card_number, first, last, activation_date))
-conn.executemany("INSERT INTO person VALUES (?, ?, ?, ?)", people)
+    people.append((card_number, email, first, last, activation_date))
+conn.executemany("INSERT INTO person VALUES (?, ?, ?, ?, ?)", people)
 
 # Create `employee` data using a portion of the people previously created
 print("(2/5) Creating Employees...")
 titles = ["librarian", "janitor", "intern", "manager"]
 employees = []
 for person in people[:21]:
-    start_date = fake.past_datetime(start_date=person[3], tzinfo=None)
+    start_date = fake.past_datetime(start_date=person[4], tzinfo=None)
     salary = random.randrange(40e3, 80e3)
     position = random.choice(titles)
     card_number = person[0]
@@ -43,7 +44,7 @@ categories = ["music", "books", "staff", "facilities"]
 feedbacks = []
 for person in people[21:41]:
     description = fake.text()[:501]
-    date = fake.past_datetime(start_date=person[3], tzinfo=None)
+    date = fake.past_datetime(start_date=person[4], tzinfo=None)
     category = random.choice(categories)
     card_number = person[0]
     feedbacks.append((description, date, category, card_number))
@@ -73,19 +74,28 @@ conn.executemany(
 print("(5/5) Creating media...")
 media_type = ["physical", "digital"]
 media = []
-for album_id in album_ids:
+checkouts = []
+for media_id, album_id in enumerate(album_ids):
     media_type = random.choice(media_type)
-    card_number = None
-    checkout_date = None
     if random.randint(0, 1) is 1:
         owner = random.choice(people)
         card_number = owner[0]
-        checkout_date = fake.past_datetime(start_date=person[3], tzinfo=None)
-    media.append((media_type, checkout_date, album_id, card_number))
+        checkout_date = fake.past_datetime(start_date=person[4], tzinfo=None)
+        return_date = None
+        if random.randint(0, 1) is 1:
+            return_date = fake.past_datetime(start_date=checkout_date,
+                                             tzinfo=None)
+        checkouts.append((checkout_date, return_date, media_id, card_number))
+    media.append((media_type, album_id))
 conn.executemany(
-    "INSERT INTO media (type, checkout_date, album_id, card_number) \
-        VALUES (?, ?, ?, ?)",
+    "INSERT INTO media (type, album_id) \
+        VALUES (?, ?)",
     media
+)
+conn.executemany(
+    "INSERT INTO checkout (checkout_date, return_date, media_id, card_number) \
+        VALUES (?, ?, ?, ?)",
+    checkouts
 )
 
 print("Commiting updates...")

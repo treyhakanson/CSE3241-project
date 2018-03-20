@@ -7,6 +7,7 @@ CREATE TABLE album (
 
 CREATE TABLE person (
    card_number CHAR(36) PRIMARY KEY, -- UUID field
+   email VARCHAR(155) UNIQUE,
    first_name VARCHAR(155) NOT NULL,
    last_name VARCHAR(155) NOT NULL,
    activation_date TIMESTAMP NOT NULL
@@ -26,14 +27,18 @@ CREATE TABLE track (
     PRIMARY KEY(title, album_id)
 );
 
--- NOTE: both `checkout_date` and `card_number` will be present if checked out,
--- both will be `NULL` if not checked out
 CREATE TABLE media (
     media_id INTEGER PRIMARY KEY,
     type VARCHAR(8) NOT NULL,
-    checkout_date DATETIME, -- will only be present if checked out
-    album_id REFERENCES album(album_id) NOT NULL,
-    card_number REFERENCES person(card_number) -- will only be present if checked out
+    album_id REFERENCES album(album_id) NOT NULL
+);
+
+CREATE TABLE checkout (
+   checkout_id INTEGER PRIMARY KEY,
+   checkout_date DATETIME NOT NULL,
+   return_date DATETIME, -- `NULL` until returned
+   media_id INTEGER NOT NULL,
+   card_number CHAR(36) NOT NULL
 );
 
 CREATE TABLE artist_albums (
