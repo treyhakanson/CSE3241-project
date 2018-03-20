@@ -8,11 +8,16 @@ SELECT full_name, SUM(length)
     GROUP BY card_number;
 
 -- 4b
+SELECT first_name, last_name, p.card_number 
+	FROM person as p
+		JOIN media as m ON p.card_number = m.card_number
+    GROUP BY first_name, last_name, m.card_number
+    HAVING COUNT(m.card_number) > AVG(m.card_number)
 
 -- 4c
 
-
 -- 4d
+
 
 -- 4e
 
