@@ -37,7 +37,7 @@ SELECT a.album_title, COUNT(*)
     	JOIN media m ON a.album_id = m.album_id
         JOIN checkout c ON m.media_id = c.media_id
     GROUP BY a.album_title
-    ORDER BY COUNT(*) DESC
+    ORDER BY COUNT(*) DESC;
 
 -- 4e
 SELECT name
