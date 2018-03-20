@@ -8,6 +8,19 @@ SELECT full_name, SUM(length)
     GROUP BY card_number;
 
 -- 4b
+SELECT first_name || ' ' || last_name full_name, email
+   FROM person p
+       JOIN checkout c ON c.card_number = p.card_number
+   GROUP BY first_name, last_name, email
+   HAVING COUNT(*) > (
+       SELECT AVG(count)
+           FROM (
+               SELECT email, COUNT(*) count
+                   FROM person p
+                       JOIN checkout c ON c.card_number = p.card_number
+                   GROUP BY email
+           )
+   );
 
 -- 4c
 SELECT album_title, COUNT(*)
@@ -19,6 +32,7 @@ SELECT album_title, COUNT(*)
     ORDER BY COUNT(*) DESC;
 
 -- 4d
+
 
 -- 4e
 SELECT name
@@ -66,3 +80,23 @@ SELECT card_number, email, first_name || ' ' || last_name full_name
     ) LIKE art.name;
 
 -- 4h
+SELECT DISTINCT name
+    FROM checkout c
+        JOIN media m ON m.media_id = c.media_id
+        JOIN artist_albums aa ON aa.album_id = m.album_id
+        JOIN artist art ON art.artist_id = aa.artist_id
+    WHERE c.card_number IN (
+        SELECT p.card_number
+           FROM person p
+               JOIN checkout c ON c.card_number = p.card_number
+           GROUP BY first_name, last_name, email
+           HAVING COUNT(*) > (
+               SELECT AVG(count)
+                   FROM (
+                       SELECT email, COUNT(*) count
+                           FROM person p
+                               JOIN checkout c ON c.card_number = p.card_number
+                           GROUP BY email
+                   )
+           )
+    )
