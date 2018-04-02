@@ -104,4 +104,4 @@ SELECT DISTINCT name
                            GROUP BY email
                    )
            )
-    )
+    );
