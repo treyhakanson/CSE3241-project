@@ -3,7 +3,8 @@ SELECT full_name, SUM(length)
     FROM (
         SELECT first_name || ' ' || last_name full_name, p.card_number card_number, m.album_id media_album_id
             FROM media m
-                JOIN person p ON p.card_number = m.card_number
+                JOIN checkout c ON c.media_id = m.media_id
+                JOIN person p ON p.card_number = c.card_number
     ) JOIN track t on media_album_id = t.album_id
     GROUP BY card_number;
 
@@ -64,7 +65,7 @@ SELECT name
     LIMIT 1;
 
 -- 4g
-SELECT card_number, email, first_name || ' ' || last_name full_name
+SELECT p.card_number, email, first_name || ' ' || last_name full_name
     FROM person p
         JOIN checkout c ON p.card_number = c.card_number
         JOIN media m ON c.media_id = m.media_id
