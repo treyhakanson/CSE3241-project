@@ -1,5 +1,19 @@
 # CSE 3421 Project
 
+## Database Recovery
+
+If the `sql.db` file gets corrupted, but generating new data is not desired, run the following to create the required tables and upload the data in the `data` directory:
+
+```sh
+bash init_new_database.sh <database_name>
+```
+
+Where `<database_name>` is the desired name of the resultant database.
+
+## Database Generation
+
+Scripts to create a new database, and populate it with sample data.
+
 Requirements:
 
 1. Python 3
