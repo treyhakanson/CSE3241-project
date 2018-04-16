@@ -37,6 +37,7 @@ CREATE TABLE checkout (
    checkout_id INTEGER PRIMARY KEY,
    checkout_date DATETIME NOT NULL,
    return_date DATETIME, -- `NULL` until returned
+   due_date DATETIME NOT NULL,
    media_id INTEGER NOT NULL,
    card_number CHAR(36) NOT NULL
 );
