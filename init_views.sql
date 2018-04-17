@@ -1,22 +1,23 @@
--- checkouts for albums
-CREATE VIEW IF NOT EXISTS album_checkouts(
-   checkout_date,
-   return_date,
-   card_number,
-   album_title
+-- number of checkouts by album
+CREATE VIEW IF NOT EXISTS checkout_info (
+   album_title,
+   genre,
+   num_checkouts
 ) AS
-   SELECT checkout_date, return_date, card_number, album_title
+   SELECT album_title,
+          genre,
+          COUNT(*) AS num_checkouts
       FROM checkout c
          JOIN media m ON c.media_id = m.media_id
-         JOIN album a ON m.album_id = a.album_id;
+         JOIN album a ON m.album_id = a.album_id
+      GROUP BY album_title;
 
--- reviews for albums
-CREATE VIEW IF NOT EXISTS album_reviews(
-   title,
-   description,
-   card_number,
-   album_title
+-- average rating for albums with reviews
+CREATE VIEW IF NOT EXISTS review_info (
+   genre,
+   avg_reviews
 ) AS
-   SELECT title, description, card_number, album_title
+   SELECT album_title, AVG(stars)
       FROM review r
-         JOIN album a ON r.album_id = r.album_id;
+         JOIN album a ON a.album_id = r.album_id
+      GROUP BY album_title;
