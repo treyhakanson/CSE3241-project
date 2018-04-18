@@ -2,13 +2,15 @@
 
 ## Database Recovery
 
-If the `sql.db` file gets corrupted, but generating new data is not desired, run the following to create the required tables and upload the data in the `data` directory:
+If the `sql.db` file gets corrupted, but generating new data is not desired, run the following to create the required tables and upload the data in the `data` directory (Unix systems only):
 
 ```sh
 bash init_new_database.sh <database_name>
 ```
 
 Where `<database_name>` is the desired name of the resultant database.
+
+If you're on windows, you can run the sql in the file `windows/data.sql`.
 
 ## Database Generation
 
