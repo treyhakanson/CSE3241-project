@@ -91,3 +91,31 @@ DELETE * FROM artist
    );
 
 COMMIT;
+
+/*
+ * Transaction to remove the "artist_id" column from the track table
+ * (NOTE: running this won't do anything, as I already ran it to remove the
+ * column before uploading; we had erroneously added an artist_id column
+ * initially, and wrote this transaction to correct it)
+ */
+BEGIN TRANSACTION;
+
+ALTER TABLE track RENAME TO temp_track;
+
+CREATE TABLE track (
+  title VARCHAR(155) NOT NULL,
+  album_id REFERENCES album(album_id) NOT NULL,
+  number SMALLINT,
+  length REAL NOT NULL,
+  size_bytes BIGINT, -- library may not have a digital copy of a track, so may
+                     -- be NULL
+  PRIMARY KEY(title, album_id)
+);
+
+INSERT INTO track (title, album_id, number, length, size_bytes)
+   SELECT title, album_id, number, length, size_bytes
+      FROM temp_track;
+
+DROP TABLE temp_track;
+
+COMMIT;

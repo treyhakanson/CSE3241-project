@@ -23,7 +23,6 @@ CREATE TABLE track (
     album_id REFERENCES album(album_id) NOT NULL,
     number SMALLINT,
     length REAL NOT NULL,
-    artist_id REFERENCES artist(artist_id) NOT NULL,
     size_bytes BIGINT, -- library may not have a digital copy of a track, so may
                        -- be NULL
     PRIMARY KEY(title, album_id)
