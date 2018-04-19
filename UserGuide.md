@@ -1,4 +1,4 @@
-Maddie Baumgardner, Sruti Chigurupati, Trey Hakanson, Elizabeth Gilbert
+Maggie Baumgardner, Sruti Chigurupati, Trey Hakanson, Elizabeth Gilbert
 CSE 3421
 04/20/2018
 Final Project User Guide
@@ -14,46 +14,53 @@ SELECT * FROM table;
 ## Database Overview
 
 ## Sample Queries
+
+Sample queries for each checkpoint can be found as standalone files in the `sql` directory.
+
 ### Relation Algebra Queries from Checkpoint 2
-a.  Find the titles of all songs by ARTIST released before YEAR
+
+a. Find the titles of all songs by ARTIST released before YEAR
 
     πtrack_title(σrelease_date < YEAR (σname = ARTIST ARTIST*ARTIST_ALBUMS*ALBUM*TRACK))
 
-b.  Give all the albums and their date of their checkout from a single patron (you choose how to designate the patron)
+b. Give all the albums and their date of their checkout from a single patron (you choose how to designate the patron)
 
     πalbum_title, checkout_dateσcard_number = CARD NUMBER(PERSON*MEDIA*ALBUM)
 
-c.  List all the albums and their unique identifiers with less than 5 copies held by the library.
+c. List all the albums and their unique identifiers with less than 5 copies held by the library.
 
     πalbum_id, title(σcount < 5(album_idFCOUNT album_id(ALBUM*MEDIA)))
 
-d.  Give all the patrons who checked out an album by ARTIST and the albums they checked out.
+d. Give all the patrons who checked out an album by ARTIST and the albums they checked out.
 
     πfirst_name, last_name, album_title(σcheckout_date != NULL(σname = ARTIST ARTIST*ARTIST_ALBUMS*ALBUM*PERSON*MEDIA))
 
-e.  Find the total number of albums checked out by a single patron (you choose how to designate the patron)
+e. Find the total number of albums checked out by a single patron (you choose how to designate the patron)
 
     FCOUNT album_id(σcard_number = CARD NUMBERMEDIA)
 
-f.  Find the patron who has checked out the most albums and the total number of albums they have checked out.
+f. Find the patron who has checked out the most albums and the total number of albums they have checked out.
 
     FMAX count(card_numberFCOUNT album_id(σcheckout_date != NULLMEDIA))
 
 ### Additional Relational Algebra Queries from Checkpoint 2
-a.  Number of feedbacks each patron as given
+
+a. Number of feedbacks each patron as given
 
     card_numberFCOUNT  feedback_id(PERSON*FEEDBACK)
 
-b.  Average star rating for each album
+b. Average star rating for each album
 
     albumFAVERAGE stars(REVIEW*ALBUM)
 
-c.  How many copies does each album have (physical and digital)?
+c. How many copies does each album have (physical and digital)?
 
     album_idFCOUNT media_id(ALBUM*MEDIA)
 
 ### Queries from Checkpoint 3
-a.  Find the titles of all tracks by ARTIST released before YEAR
+
+a. Find the titles of all tracks by ARTIST released before YEAR
+
 ```sql
 SELECT t.title
     FROM track t
@@ -64,7 +71,8 @@ SELECT t.title
           release_date < 1982;
 ```
 
-b.  Give all the albums and their date of their checkout from a single patron (you choose how to designate the patron)
+b. Give all the albums and their date of their checkout from a single patron (you choose how to designate the patron)
+
 ```sql
 SELECT album_title, release_date
    FROM Album AS a
@@ -74,7 +82,8 @@ SELECT album_title, release_date
    WHERE p.card_number = '7eddeba0-c2cc-4d7a-a1b1-7248c9dbda63';
 ```
 
-c.  List all the albums and their unique identifiers with less than 5 copies held by the library.
+c. List all the albums and their unique identifiers with less than 5 copies held by the library.
+
 ```sql
 SELECT a.album_id, a.album_title
     FROM album a
@@ -83,7 +92,8 @@ SELECT a.album_id, a.album_title
     HAVING COUNT(*) < 5;
 ```
 
-d.  Give all the patrons who checked out an album by ARTIST and the albums they checked out.
+d. Give all the patrons who checked out an album by ARTIST and the albums they checked out.
+
 ```sql
 SELECT album_title, first_name, last_name
    FROM Album AS a
@@ -95,7 +105,8 @@ SELECT album_title, first_name, last_name
    WHERE a2.name = "AC/DC";
 ```
 
-e.  Find the total number of albums checked out by a single patron (you choose how to designate the patron)
+e. Find the total number of albums checked out by a single patron (you choose how to designate the patron)
+
 ```sql
 SELECT COUNT(*)
     FROM media AS m
@@ -104,7 +115,8 @@ SELECT COUNT(*)
         WHERE p.card_number = '7eddeba0-c2cc-4d7a-a1b1-7248c9dbda63';
 ```
 
-f.  Find the patron who has checked out the most albums and the total number of albums they have checked out.
+f. Find the patron who has checked out the most albums and the total number of albums they have checked out.
+
 ```sql
 SELECT full_name, MAX(count)
     FROM (
@@ -118,7 +130,9 @@ SELECT full_name, MAX(count)
 ```
 
 ### Additional Queries from Checkpoint 3
+
 a. Number of feedbacks each patron as given
+
 ```sql
 SELECT first_name || ' ' || last_name, COUNT(*)
     FROM person p
@@ -126,7 +140,8 @@ SELECT first_name || ' ' || last_name, COUNT(*)
     GROUP BY p.card_number;
 ```
 
-b.  Average star rating for each album
+b. Average star rating for each album
+
 ```sql
 SELECT album_title, AVG(stars)
    FROM review r
@@ -134,7 +149,8 @@ SELECT album_title, AVG(stars)
    GROUP BY a.album_id;
 ```
 
-c.  How many copies does each album have (physical and digital)?
+c. How many copies does each album have (physical and digital)?
+
 ```sql
 SELECT a.album_title, COUNT(*)
     FROM album a
@@ -143,7 +159,9 @@ SELECT a.album_title, COUNT(*)
 ```
 
 ### Queries from Checkpoint 4
+
 a. Provide a list of patron names, along with the total combined running time of all the albums they have checked out.
+
 ```sql
 SELECT full_name, SUM(length)
     FROM (
@@ -156,6 +174,7 @@ SELECT full_name, SUM(length)
 ```
 
 b. Provide a list of patron names and email addresses for patrons who have checked out more albums than the average patron.
+
 ```sql
 SELECT first_name || ' ' || last_name full_name, email
    FROM person p
@@ -173,6 +192,7 @@ SELECT first_name || ' ' || last_name full_name, email
 ```
 
 c. Provide a list of the albums in the database and associated total copies lent to patrons, sorted from the album that has been lent the most to the album that has been lent the least.
+
 ```sql
 SELECT album_title, COUNT(*)
     FROM album a
@@ -182,7 +202,9 @@ SELECT album_title, COUNT(*)
     GROUP BY album_title
     ORDER BY COUNT(*) DESC;
 ```
+
 d. Provide a list of the titles in the database and associated totals for copies checked out to customers, sorted from the title that has been checked out the highest amount to the title checked out the smallest.
+
 ```sql
 SELECT a.album_title, COUNT(*)
 	FROM album a
@@ -191,7 +213,9 @@ SELECT a.album_title, COUNT(*)
     GROUP BY a.album_title
     ORDER BY COUNT(*) DESC;
 ```
+
 e. Find the most popular artist in the database (i.e. the one who has had the most lent albums)
+
 ```sql
 SELECT name
     FROM album a
@@ -204,7 +228,9 @@ SELECT name
     ORDER BY COUNT(*) DESC
     LIMIT 1;
 ```
+
 f. Find the most listened to artist in the database (use the running time of the album and number of times the album has been lent out to calculate)
+
 ```sql
 SELECT name
     FROM album a
@@ -217,7 +243,9 @@ SELECT name
     ORDER BY SUM(length) DESC
     LIMIT 1;
 ```
+
 g. Provide a list of customer information for patrons who have checked out anything by the most listened to artist in the database.
+
 ```sql
 SELECT p.card_number, email, first_name || ' ' || last_name full_name
     FROM person p
@@ -239,7 +267,9 @@ SELECT p.card_number, email, first_name || ' ' || last_name full_name
             LIMIT 1
     ) LIKE art.name;
 ```
+
 h. Provide a list of artists who authored the albums checked out by customers who have checked out more albums than the average customer.
+
 ```sql
 SELECT DISTINCT name
     FROM checkout c
@@ -263,9 +293,6 @@ SELECT DISTINCT name
     );
 ```
 
-
-
-
 ## Insertion and Deletion
 
 ### Album
@@ -273,7 +300,8 @@ SELECT DISTINCT name
 #### Insert
 
 ```sql
-INSERT INTO album VALUES(1,'For Those About To Rock We Salute You',1981,'Rock');
+INSERT INTO album
+   VALUES(1,'For Those About To Rock We Salute You',1981,'Rock');
 ```
 
 #### Delete
@@ -290,7 +318,9 @@ Must delete artist_album tuple, all tracks, all media records.
 #### Insert
 
 ```sql
-INSERT INTO person VALUES('18108a24-4eac-498d-a2d3-4dc4cccf405a','jasonmorris5660@gmail.com','Jason','Morris','2017-10-24 21:08:23');
+INSERT INTO person
+   VALUES('18108a24-4eac-498d-a2d3-4dc4cccf405a','jasonmorris5660@gmail.com',
+          'Jason','Morris','2017-10-24 21:08:23');
 ```
 
 #### Delete
@@ -307,7 +337,8 @@ Must delete checkout history, all feedback, all reviews, employee record if appl
 #### Insert
 
 ```sql
-INSERT INTO artist VALUES(1,'AC/DC');
+INSERT INTO artist
+   VALUES(1,'AC/DC');
 ```
 
 #### Delete
@@ -324,7 +355,8 @@ Must delete artist_album tuple.
 #### Insert
 
 ```sql
-INSERT INTO track VALUES('Breaking The Rules',1,NULL,4.3799999999999998934,1,8596840);
+INSERT INTO track
+   VALUES('Breaking The Rules',1,NULL,4.3799999999999998934,1,8596840);
 ```
 
 Album must exist.
@@ -341,7 +373,8 @@ DELETE FROM track AS t
 #### Insert
 
 ```sql
-INSERT INTO media VALUES(1,'physical',1);
+INSERT INTO media
+   VALUES(1,'physical',1);
 ```
 
 Album must exist.
@@ -360,7 +393,9 @@ Must delete checkout history.
 #### Insert
 
 ```sql
-INSERT INTO checkout VALUES(2,'2017-08-24 03:43:51',NULL,1,'fdb627b1-23f4-4d43-8492-e5a5780d66fb','2017-12-09 13:12:44');
+INSERT INTO checkout
+   VALUES(2,'2017-08-24 03:43:51',NULL,1,'fdb627b1-23f4-4d43-8492-e5a5780d66fb',
+      '2017-12-09 13:12:44');
 ```
 
 Media and person must exist.
@@ -394,7 +429,9 @@ DELETE FROM artist_albums AS aa
 #### Insert
 
 ```sql
-INSERT INTO employee VALUES('2017-10-29 12:55:42',51055.999999999999998,'librarian','18108a24-4eac-498d-a2d3-4dc4cccf405a');
+INSERT INTO employee
+   VALUES('2017-10-29 12:55:42',51055.999999999999998,'librarian',
+      '18108a24-4eac-498d-a2d3-4dc4cccf405a');
 ```
 
 Person must exist.
@@ -411,7 +448,9 @@ DELETE FROM employee AS e
 #### Insert
 
 ```sql
-INSERT INTO feedback VALUES(1,replace('Ok among class too. Fund organization throughout too when. Media green certain line.\nWest value campaign personal address recent already. Meeting worker ball east leave or.','\n',char(10)),'2017-08-31 14:12:30','books','5bdb012a-f823-4c8b-83e8-60c36c61743b');
+INSERT INTO feedback
+   VALUES(1, replace('Ok among class too. Fund organization throughout too when. Media green certain line.\nWest value campaign personal address recent already. Meeting worker ball east leave or.','\n',char(10)),
+   '2017-08-31 14:12:30','books','5bdb012a-f823-4c8b-83e8-60c36c61743b');
 ```
 
 Person must exist.
@@ -428,7 +467,8 @@ DELETE FROM feedback AS f
 #### Insert
 
 ```sql
-INSERT INTO review VALUES(1,0,replace('Outside hard discuss subject wind dark simply. Market big specific enter upon left sea.\nWatch that everyone mouth wrong. Play community agent particularly e','\n',char(10)),replace('Marriage minute again rather nice design unit. Area would scientist focus.\nFrom best experience our paper quite value. Sea yourself cause environmental account he.','\n',char(10)),57,'284388ff-f6d6-417e-b8de-be17cd8c909c');
+INSERT INTO review
+   VALUES(1,0,replace('Outside hard discuss subject wind dark simply. Market big specific enter upon left sea.\nWatch that everyone mouth wrong. Play community agent particularly e','\n',char(10)),replace('Marriage minute again rather nice design unit. Area would scientist focus.\nFrom best experience our paper quite value. Sea yourself cause environmental account he.','\n',char(10)),57,'284388ff-f6d6-417e-b8de-be17cd8c909c');
 ```
 
 Person must exist.
