@@ -1,4 +1,4 @@
--- number of checkouts by album
+-- Number of checkouts all-time, grouped by album
 CREATE VIEW IF NOT EXISTS checkout_info (
    album_title,
    genre,
@@ -12,7 +12,7 @@ CREATE VIEW IF NOT EXISTS checkout_info (
          JOIN album a ON m.album_id = a.album_id
       GROUP BY album_title;
 
--- average rating for albums with reviews
+-- Average rating for albums with reviews
 CREATE VIEW IF NOT EXISTS review_info (
    genre,
    avg_reviews
