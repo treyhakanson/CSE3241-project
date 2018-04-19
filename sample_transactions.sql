@@ -5,15 +5,11 @@ BEGIN TRANSACTION;
 
 INSERT INTO artist
 VALUES
-   ("Orikami Records");
+   (61, "Orikami Records");
 
 INSERT INTO album
 VALUES
-   ("Orikami & Feels Compilation", "2018-02-23", "Hip Hop");
-
--- TODO: how to reference the id of the newly created items? This is currently
--- hardcoding it to 61 and 109 since those are the ids that will be produced by
--- the autoincremented primary key.
+   (109, "Orikami & Feels Compilation", "2018-02-23", "Hip Hop");
 
 INSERT INTO artist_albums
 VALUES
@@ -21,23 +17,23 @@ VALUES
 
 INSERT INTO track
 VALUES
-   ("Kazumi Kaneda", 109, 1, 3.3, 61, 6600000),
-   ("Madrob_Beats", 109, 2, 2.36, 61, 4700000),
-   ("Pandrezz", 109, 3, 2.16, 61, 4100000),
-   ("Mycatisflying", 109, 4, 1.65, 61, 3500000),
-   ("Shogonodo", 109, 5, 2.56, 61, 4600000),
-   ("Soryo", 109, 6, 2.72, 61, 5000000),
-   ("Rairakku", 109, 7, 2.97, 61, 5700000),
-   ("97SPECIAL", 109, 8, 1.36, 61, 2800000),
-   ("Rikinish & Tonguee", 109, 9, 2.4, 61, 4000000),
-   ("Thilonius", 109, 10, 2.23, 61, 3800000),
-   ("Saib.", 109, 11, 2.9, 61, 5800000),
-   ("Neptunien", 109, 12, 2.72, 61, 5200000),
-   ("TiMT & POD", 109, 13, 3.62, 61, 7700000),
-   ("j'san", 109, 14, 2.07, 61, 3800000),
-   ("Dhrma", 109, 15, 4.32, 61, 8700000),
-   ("Dayzero", 109, 16, 3.65, 61, 6900000),
-   ("Nymano", 109, 17, 2.5, 61, 5100000);
+   ("Kazumi Kaneda", 109, 1, 3.3, 6600000),
+   ("Madrob_Beats", 109, 2, 2.36, 4700000),
+   ("Pandrezz", 109, 3, 2.16, 4100000),
+   ("Mycatisflying", 109, 4, 1.65, 3500000),
+   ("Shogonodo", 109, 5, 2.56, 4600000),
+   ("Soryo", 109, 6, 2.72, 5000000),
+   ("Rairakku", 109, 7, 2.97, 5700000),
+   ("97SPECIAL", 109, 8, 1.36, 2800000),
+   ("Rikinish & Tonguee", 109, 9, 2.4, 4000000),
+   ("Thilonius", 109, 10, 2.23, 3800000),
+   ("Saib.", 109, 11, 2.9, 5800000),
+   ("Neptunien", 109, 12, 2.72, 5200000),
+   ("TiMT & POD", 109, 13, 3.62, 7700000),
+   ("j'san", 109, 14, 2.07, 3800000),
+   ("Dhrma", 109, 15, 4.32, 8700000),
+   ("Dayzero", 109, 16, 3.65, 6900000),
+   ("Nymano", 109, 17, 2.5, 5100000);
 
 COMMIT;
 
@@ -45,50 +41,45 @@ COMMIT;
  * Transaction to remove an artist and all associated content from the database.
  * (will delete the content created by the above transaction, so run that first)
  */
-BEGIN TRANSACTION
+BEGIN TRANSACTION;
 
--- NOTE: tables aren't in 3NF/BCNF because track has album_id and artist_id,
--- which is repetitive
-
--- Delete all tracks from albums by the specified artist
-DELETE * FROM track
-   WHERE album_id IN (
-      SELECT album_id
-         FROM artist_albums
-         WHERE artist_id = (
-            SELECT artist_id
-               FROM artist
-               WHERE name = "Orikami Records
-         ")
-   );
-
--- Delete all albums by the specified artist
-DELETE * FROM album
-   WHERE album_id IN (
-      SELECT album_id
-         FROM artist_albums
-         WHERE artist_id = (
-            SELECT artist_id
-               FROM artist
-               WHERE name = "Orikami Records
-         ")
-   );
+-- Temporarily store elements of pivot table that will be needed after they are
+-- deleted (to avoid foreign key constraint errors)
+CREATE TABLE temp_artist_albums (
+   album_id INTEGER,
+   artist_id INTEGER
+);
+INSERT INTO temp_artist_albums (album_id, artist_id)
+   SELECT album_id, artist_id
+      FROM artist_albums
+      WHERE artist_id = 61;
 
 -- Delete all tuples from the pivot table involving that artist
-DELETE * FROM artist_albums
-   WHERE artist_id = (
-      SELECT artist_id
-         FROM artist
-         WHERE name = "Orikami Records"
+DELETE FROM artist_albums
+   WHERE artist_id = 61;
+
+-- Delete all tracks from albums by the specified artist
+DELETE FROM track
+   WHERE album_id IN (
+      SELECT album_id
+         FROM temp_artist_albums
+         WHERE artist_id = 61
    );
 
 -- Delete the artist from the database
-DELETE * FROM artist
-   WHERE artist_id = (
-      SELECT artist_id
-         FROM artist
-         WHERE name = "Orikami Records"
+DELETE FROM artist
+   WHERE artist_id = 61;
+
+-- Delete all albums by the specified artist
+DELETE FROM album
+   WHERE album_id IN (
+      SELECT album_id
+         FROM temp_artist_albums
+         WHERE artist_id = 61
    );
+
+-- Drop the temporary relation
+DROP TABLE temp_artist_albums;
 
 COMMIT;
 
