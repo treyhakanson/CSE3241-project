@@ -1,5 +1,6 @@
 /*
  * Transaction to add a new album of tracks, by a new artist, into the database.
+ * Assuming no media is added.
  */
 BEGIN TRANSACTION;
 
@@ -39,7 +40,9 @@ COMMIT;
 
 /*
  * Transaction to remove an artist and all associated content from the database.
- * (will delete the content created by the above transaction, so run that first)
+ * Assuming no media exists.
+ * NOTE: will delete the content created by the above transaction, so run that
+ * first
  */
 BEGIN TRANSACTION;
 
