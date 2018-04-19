@@ -8,6 +8,7 @@ Final Project User Guide
 # User Guide
 
 ## Database Overview
+All primary keys cannot be null
 Entity: Album
 Attributes: album_id, album_title, release_date, genre
 The album_id is a unique integer ID assigned to each album, used as the primary key of the album relation. The album_title is the 155 character or less string title of the album and cannot be null. The release_date is the date time of the album's release and cannot be null. The genre is a 155 character or less string label describing the album genre and cannot be null.
@@ -27,14 +28,17 @@ Entity: checkout
 Attributes: checkout_id, checkout_date, return_date, media_id, card_number, due_date
 The checkout_id is a unique integer ID assigned to the checkout session, used as a primary key to the checkout relation. The checkout_date is the date time at which the media was checked out, and cannot be null. The return_date is the date time at which the media was returned, and is null until returned. The media_id is a unique integer ID assigned to each media and cannot be null. The card_number is a 36 character or less string identifying the person's library card, used as a foreign key to the person relation and cannot be null. The due_date is the date time at which the media is due to be returned to the library and cannot be null.
 Entity: person
-Attributes: card_number, email, first_name, last_name, activation_date
-The card_number is a 36 character or less string identifying the person's library card, used as a primary key in the person relation. The email is a unique 155 character or less string that is the email address of the person. The first_name is a 155 character or less string that is the first name of the person and is not null. The last_name is a 155 character or less string that is the last name of the person and is not null. The activation_date is the date time of when the person was created in the library system and is not null. 
+Attributes: card_number, email, first_name, last_name, activation_date, num_cards, card_number_active
+The card_number is a 36 character or less string identifying the person's library card, used as a primary key in the person relation. The email is a unique 155 character or less string that is the email address of the person. The first_name is a 155 character or less string that is the first name of the person and is not null. The last_name is a 155 character or less string that is the last name of the person and is not null. The activation_date is the date time of when the person was created in the library system and is not null. The num_cards is an integer that is not null and defaults to 1 identifying the number of cards a person has. The card_number_active is a non-null boolean field defaulting to 1 where 1 indicates that a card number is active and 0 indicates that it is inactive.
 Entity: employee
-Attributes:
+Attributes: start_date, salary, position, card_number
+The start_date is the date time that the employee started working  for the library and cannot be null. The salary is a decimal representing the salary of the employee and cannot be null. The position is a 155 character or less string of the employee's job title. The card_number is a 36 character or less string identifying the person's library card, used as a primary key in the employee relation and foreign key to the person relation.
 Entity: feedback
-Attributes:
+Attributes: feedback_id, description, date, category, card_number
+The feedback_id is a unique integer identifying the feedback submission, used as a primary key of the feedback relation. The description is a 500 character or less string of the person's feedback and cannot be null. The date is the date time that the feedback was submitted at. The category is a 155 character or less string of the category the feedback falls under and cannot be null. The card_number is a 36 character or less string identifying the person's library card, used as a foreign key to the person relation.
 Entity: review
-Attributes:
+Attributes: review_id, stars, title, description, album_id, card_number
+The review_id is a unique integer identifying the review submission, used as a primary key of the review relation. The stars is a small integer representing the number of the stars of the review. The title is a 155 character or less title of the review. The description is a 500 character or less description of the review. The album_id is a unique integer ID assigned to each album, used as a foreign key to the album relation and cannot be null. The card_number is a 36 character or less string identifying the person's library card, used as a foreign key to the person relation and cannot be null. 
 
 CHECK PK (underline), FK (arrow away), NULL, type
 
