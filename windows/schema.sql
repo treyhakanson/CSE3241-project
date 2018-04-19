@@ -4,24 +4,9 @@ CREATE TABLE album (
     release_date DATETIME NOT NULL,
     genre VARCHAR(155) NOT NULL
 );
-CREATE TABLE person (
-   card_number CHAR(36) PRIMARY KEY, -- UUID field
-   email VARCHAR(155) UNIQUE,
-   first_name VARCHAR(155) NOT NULL,
-   last_name VARCHAR(155) NOT NULL,
-   activation_date TIMESTAMP NOT NULL
-);
 CREATE TABLE artist (
     artist_id INTEGER PRIMARY KEY,
     name VARCHAR(155) NOT NULL
-);
-CREATE TABLE track (
-    title VARCHAR(155) NOT NULL,
-    album_id REFERENCES album(album_id) NOT NULL,
-    number SMALLINT,
-    length REAL NOT NULL,
-    artist_id REFERENCES artist(artist_id) NOT NULL, size_bytes BIGINT,
-    PRIMARY KEY(title, album_id)
 );
 CREATE TABLE media (
     media_id INTEGER PRIMARY KEY,
@@ -81,3 +66,18 @@ CREATE VIEW review_info (
       FROM review r
          JOIN album a ON a.album_id = r.album_id
       GROUP BY album_title;
+CREATE INDEX album_names ON album (album_title);
+CREATE INDEX artist_names ON artist (name);
+CREATE INDEX checkout_due_dates ON checkout (due_date);
+CREATE INDEX checkout_return_dates ON checkout (return_date);
+CREATE TABLE track (
+    title VARCHAR(155) NOT NULL,
+    album_id REFERENCES album(album_id) NOT NULL,
+    number SMALLINT,
+    length REAL NOT NULL,
+    size_bytes BIGINT, -- library may not have a digital copy of a track, so may
+                       -- be NULL
+    PRIMARY KEY(title, album_id)
+);
+CREATE TABLE person (card_number CHAR (36) PRIMARY KEY, email VARCHAR (155) UNIQUE, first_name VARCHAR (155) NOT NULL, last_name VARCHAR (155) NOT NULL, activation_date TIMESTAMP NOT NULL, num_cards INTEGER NOT NULL DEFAULT (1), card_number_active BOOLEAN NOT NULL DEFAULT (0));
+CREATE INDEX person_card_numbers ON person (card_number);
