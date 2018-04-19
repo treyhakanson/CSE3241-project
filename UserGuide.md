@@ -1,51 +1,132 @@
 Maggie Baumgardner, Sruti Chigurupati, Trey Hakanson, Elizabeth Gilbert
+
 CSE 3421
+
 04/20/2018
+
 Final Project User Guide
 
 ---
 
 # User Guide
 
-```sql
-SELECT * FROM table;
-```
-
 ## Database Overview
-All primary keys cannot be null
-Entity: Album
-Attributes: album_id, album_title, release_date, genre
-The album_id is a unique integer ID assigned to each album, used as the primary key of the album relation. The album_title is the 155 character or less string title of the album and cannot be null. The release_date is the date time of the album's release and cannot be null. The genre is a 155 character or less string label describing the album genre and cannot be null.
-Entity: artist_albums
-Attributes: artist_id, album_id
-The artist_id is unique integer ID assigned to each artist, used as a primary key to the artist_albums relation and foreign key to the artist relation and cannot be null. The album_id is a unique integer ID assigned to each album, used as a primary key to the artist_albums relation and foreign key to the album relation and cannot be null.
-Entity: artist
-Attributes: artist_id, name
-The artist_id is unique integer ID assigned to each artist, used as the primary key of the artist relation. The name is a 155 character or less string name of the artist and cannot be null.
-Entity: track
-Attributes: title, album_id, number, length, size_bytes
-The title is the 155 character or less string title of the track and cannot be null. The album_id is a unique small integer ID assigned to each album, used as a primary key to the track relation and foreign key to the album relation and cannot be null. The number is the integer track number of the track in its album. The length is the decimal length of the track playtime in minutes and cannot be null. The size_bytes is a big integer representing the size of the track in bytes.
-Entity: media
-Attributes: media_id, type, album_id
-The media_id is a unique integer ID assigned to each media, used as a primary key in the media relation and foreign key to the checkout relation. The type is an 8 character or less string labeling the media as either "physical" or "digital" and cannot be null. The album_id is a unique integer ID assigned to each album, used as a foreign key to the album relation and cannot be null.
-Entity: checkout
-Attributes: checkout_id, checkout_date, return_date, media_id, card_number, due_date
-The checkout_id is a unique integer ID assigned to the checkout session, used as a primary key to the checkout relation. The checkout_date is the date time at which the media was checked out, and cannot be null. The return_date is the date time at which the media was returned, and is null until returned. The media_id is a unique integer ID assigned to each media and cannot be null. The card_number is a 36 character or less string identifying the person's library card, used as a foreign key to the person relation and cannot be null. The due_date is the date time at which the media is due to be returned to the library and cannot be null.
-Entity: person
-Attributes: card_number, email, first_name, last_name, activation_date, num_cards, card_number_active
-The card_number is a 36 character or less string identifying the person's library card, used as a primary key in the person relation. The email is a unique 155 character or less string that is the email address of the person. The first_name is a 155 character or less string that is the first name of the person and is not null. The last_name is a 155 character or less string that is the last name of the person and is not null. The activation_date is the date time of when the person was created in the library system and is not null. The num_cards is an integer that is not null and defaults to 1 identifying the number of cards a person has. The card_number_active is a non-null boolean field defaulting to 1 where 1 indicates that a card number is active and 0 indicates that it is inactive.
-Entity: employee
-Attributes: start_date, salary, position, card_number
-The start_date is the date time that the employee started working  for the library and cannot be null. The salary is a decimal representing the salary of the employee and cannot be null. The position is a 155 character or less string of the employee's job title. The card_number is a 36 character or less string identifying the person's library card, used as a primary key in the employee relation and foreign key to the person relation.
-Entity: feedback
-Attributes: feedback_id, description, date, category, card_number
-The feedback_id is a unique integer identifying the feedback submission, used as a primary key of the feedback relation. The description is a 500 character or less string of the person's feedback and cannot be null. The date is the date time that the feedback was submitted at. The category is a 155 character or less string of the category the feedback falls under and cannot be null. The card_number is a 36 character or less string identifying the person's library card, used as a foreign key to the person relation.
-Entity: review
-Attributes: review_id, stars, title, description, album_id, card_number
-The review_id is a unique integer identifying the review submission, used as a primary key of the review relation. The stars is a small integer representing the number of the stars of the review. The title is a 155 character or less title of the review. The description is a 500 character or less description of the review. The album_id is a unique integer ID assigned to each album, used as a foreign key to the album relation and cannot be null. The card_number is a 36 character or less string identifying the person's library card, used as a foreign key to the person relation and cannot be null. 
 
-CHECK PK (underline), FK (arrow away), NULL, type
+All primary keys are unique, and cannot be null.
 
+### Entity: Album
+
+Attributes:
+
+* album_id
+* album_title
+* release_date
+* genre
+
+The `album_id` is a unique integer ID assigned to each album, used as the primary key of the album relation. The `album_title` is the 155 character or less string title of the album and cannot be null. The `release_date` is the date time of the album's release and cannot be null. The `genre` is a 155 character or less string label describing the album genre and cannot be null.
+
+### Entity: artist_albums
+
+Attributes:
+
+* artist_id
+* album_id
+
+The `artist_id` is unique integer ID assigned to each artist, used as a primary key to the `artist_albums` relation and foreign key to the artist relation and cannot be null. The `album_id` is a unique integer ID assigned to each album, used as a primary key to the `artist_albums` relation and foreign key to the album relation and cannot be null.
+
+### Entity: artist
+
+Attributes:
+
+* artist_id
+* name
+
+The `artist_id` is unique integer ID assigned to each artist, used as the primary key of the artist relation. The `name` is a 155 character or less string name of the artist and cannot be null.
+
+### Entity: track
+
+Attributes:
+
+* title
+* album_id
+* number
+* length
+* size_bytes
+
+The `title` is the 155 character or less string title of the track and cannot be null. The `album_id` is a unique small integer ID assigned to each album, used as a primary key to the track relation and foreign key to the album relation and cannot be null. The `number` is the integer track number of the track in its album. The `length` is the decimal length of the track playtime in minutes and cannot be null. The `size_bytes` is a big integer representing the size of the track in bytes.
+
+### Entity: media
+
+Attributes:
+
+* media_id
+* type
+* album_id
+
+The `media_id` is a unique integer ID assigned to each media, used as a primary key in the media relation and foreign key to the checkout relation. The `type` is an 8 character or less string labeling the media as either "physical" or "digital" and cannot be null. The `album_id` is a unique integer ID assigned to each album, used as a foreign key to the album relation and cannot be null.
+
+### Entity: checkout
+
+Attributes:
+
+* checkout_id
+* checkout_date
+* return_date
+* media_id
+* card_number
+* due_date
+
+The `checkout_id` is a unique integer ID assigned to the checkout session, used as a primary key to the checkout relation. The `checkout_date` is the date time at which the media was checked out, and cannot be null. The `return_date` is the date time at which the media was returned, and is null until returned. The `media_id` is a unique integer ID assigned to each media and cannot be null. The `card_number` is a 36 character or less string identifying the person's library card, used as a foreign key to the person relation and cannot be null. The `due_date` is the date time at which the media is due to be returned to the library and cannot be null.
+
+### Entity: person
+
+Attributes:
+
+* card_number
+* email
+* first_name
+* last_name
+* activation_date
+* num_cards
+* card_number_active
+
+The `card_number` is a 36 character or less string identifying the person's library card, used as a primary key in the person relation. The `email` is a unique 155 character or less string that is the email address of the person. The `first_name` is a 155 character or less string that is the first name of the person and is not null. The `last_name` is a 155 character or less string that is the last name of the person and is not null. The `activation_date` is the date time of when the person was created in the library system and is not null. The `num_cards` is an integer that is not null and defaults to 1 identifying the number of cards a person has. The `card_number_active` is a non-null boolean field defaulting to 1 where 1 indicates that a card number is active and 0 indicates that it is inactive.
+
+### Entity: employee
+
+Attributes:
+
+* start_date
+* salary
+* position
+* card_number
+
+The `start_date` is the date time that the employee started working for the library and cannot be null. The `salary` is a decimal representing the salary of the employee and cannot be null. The `position` is a 155 character or less string of the employee's job title. The `card_number` is a 36 character or less string identifying the person's library card, used as a primary key in the employee relation and foreign key to the person relation.
+
+### Entity: feedback
+
+Attributes:
+
+* feedback_id
+* description
+* date
+* category
+* card_number
+
+The `feedback_id` is a unique integer identifying the feedback submission, used as a primary key of the feedback relation. The `description` is a 500 character or less string of the person's feedback and cannot be null. The `date` is the date time that the feedback was submitted at. The `category` is a 155 character or less string of the category the feedback falls under and cannot be null. The `card_number` is a 36 character or less string identifying the person's library card, used as a foreign key to the person relation.
+
+### Entity: review
+
+Attributes:
+
+* review_id
+* stars
+* title
+* description
+* album_id
+* card_number
+
+The `review_id` is a unique integer identifying the review submission, used as a primary key of the review relation. The `stars` is a small integer representing the number of the stars of the review. The `title` is a 155 character or less title of the review. The `description` is a 500 character or less description of the review. The `album_id` is a unique integer ID assigned to each album, used as a foreign key to the album relation and cannot be null. The `card_number` is a 36 character or less string identifying the person's library card, used as a foreign key to the person relation and cannot be null.
 
 ## Sample Queries
 
@@ -55,41 +136,41 @@ Sample queries for each checkpoint can be found as standalone files in the `sql`
 
 a. Find the titles of all songs by ARTIST released before YEAR
 
-    πtrack_title(σrelease_date < YEAR (σname = ARTIST ARTIST*ARTIST_ALBUMS*ALBUM*TRACK))
+> <span >π<sub>track_title</sub>(σ<sub>release_date < YEAR</sub>(σ<sub>name = ARTIST</sub> ARTIST\*ARTIST_ALBUMS\*ALBUM\*TRACK))</span>
 
 b. Give all the albums and their date of their checkout from a single patron (you choose how to designate the patron)
 
-    πalbum_title, checkout_dateσcard_number = CARD NUMBER(PERSON*MEDIA*ALBUM)
+> <span >π<sub>album_title, checkout_date</sub>σ<sub>card_number = CARD NUMBER</sub>(PERSON\*MEDIA\*ALBUM)</span>
 
 c. List all the albums and their unique identifiers with less than 5 copies held by the library.
 
-    πalbum_id, title(σcount < 5(album_idFCOUNT album_id(ALBUM*MEDIA)))
+> <span >π<sub>album_id, title</sub>(σ<sub>count < 5</sub>(<sub>album_id</sub>F<sub>COUNT album_id</sub>(ALBUM\*MEDIA)))</span>
 
 d. Give all the patrons who checked out an album by ARTIST and the albums they checked out.
 
-    πfirst_name, last_name, album_title(σcheckout_date != NULL(σname = ARTIST ARTIST*ARTIST_ALBUMS*ALBUM*PERSON*MEDIA))
+> <span >π<sub>first_name, last_name, album_title</sub>(σ<sub>checkout_date != NULL</sub>(σ<sub>name = ARTIST</sub>ARTIST\*ARTIST_ALBUMS\*ALBUM\*PERSON\*MEDIA))</span>
 
 e. Find the total number of albums checked out by a single patron (you choose how to designate the patron)
 
-    FCOUNT album_id(σcard_number = CARD NUMBERMEDIA)
+> <span >F<sub>COUNT album_id</sub>(σ<sub>card_number = CARD NUMBER</sub> MEDIA)</span>
 
 f. Find the patron who has checked out the most albums and the total number of albums they have checked out.
 
-    FMAX count(card_numberFCOUNT album_id(σcheckout_date != NULLMEDIA))
+> <span >F<sub>MAX count</sub>(<sub>card_number</sub>F<sub>COUNT album_id</sub>(σ<sub>checkout_date != NULL</sub> MEDIA))</span>
 
 ### Additional Relational Algebra Queries from Checkpoint 2
 
 a. Number of feedbacks each patron as given
 
-    card_numberFCOUNT  feedback_id(PERSON*FEEDBACK)
+> <span ><sub>card_number</sub>F<sub>COUNT feedback_id</sub>(PERSON\*FEEDBACK)</span>
 
 b. Average star rating for each album
 
-    albumFAVERAGE stars(REVIEW*ALBUM)
+> <span ><sub>album</sub>F<sub>AVERAGE stars</sub>(REVIEW\*ALBUM)</span>
 
 c. How many copies does each album have (physical and digital)?
 
-    album_idFCOUNT media_id(ALBUM*MEDIA)
+> <span ><sub>album_id</sub>F<sub>COUNT media_id</sub>(ALBUM\*MEDIA)</span>
 
 ### Queries from Checkpoint 3
 
@@ -199,7 +280,9 @@ a. Provide a list of patron names, along with the total combined running time of
 ```sql
 SELECT full_name, SUM(length)
     FROM (
-        SELECT first_name || ' ' || last_name full_name, p.card_number card_number, m.album_id media_album_id
+        SELECT first_name || ' ' || last_name full_name,
+               p.card_number card_number,
+               m.album_id media_album_id
             FROM media m
                 JOIN checkout c ON c.media_id = m.media_id
                 JOIN person p ON p.card_number = c.card_number
@@ -331,14 +414,14 @@ SELECT DISTINCT name
 
 ### Album
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO album
    VALUES(1,'For Those About To Rock We Salute You',1981,'Rock');
 ```
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM album AS a
@@ -349,7 +432,7 @@ Must delete artist_album tuple, all tracks, all media records.
 
 ### Person
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO person
@@ -357,7 +440,7 @@ INSERT INTO person
           'Jason','Morris','2017-10-24 21:08:23');
 ```
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM person AS p
@@ -368,14 +451,14 @@ Must delete checkout history, all feedback, all reviews, employee record if appl
 
 ### Artist
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO artist
    VALUES(1,'AC/DC');
 ```
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM artist AS a
@@ -386,7 +469,7 @@ Must delete artist_album tuple.
 
 ### Track
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO track
@@ -395,7 +478,7 @@ INSERT INTO track
 
 Album must exist.
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM track AS t
@@ -404,7 +487,7 @@ DELETE FROM track AS t
 
 ### Media
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO media
@@ -413,7 +496,7 @@ INSERT INTO media
 
 Album must exist.
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM media AS m
@@ -424,7 +507,7 @@ Must delete checkout history.
 
 ### Checkout
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO checkout
@@ -434,7 +517,7 @@ INSERT INTO checkout
 
 Media and person must exist.
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM checkout AS c
@@ -443,7 +526,7 @@ DELETE FROM checkout AS c
 
 ### Artist_Albums
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO artist_albums VALUES(1,1);
@@ -451,7 +534,7 @@ INSERT INTO artist_albums VALUES(1,1);
 
 Album and artist must exist.
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM artist_albums AS aa
@@ -460,7 +543,7 @@ DELETE FROM artist_albums AS aa
 
 ### Employee
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO employee
@@ -470,7 +553,7 @@ INSERT INTO employee
 
 Person must exist.
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM employee AS e
@@ -479,17 +562,19 @@ DELETE FROM employee AS e
 
 ### Feedback
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO feedback
-   VALUES(1, replace('Ok among class too. Fund organization throughout too when. Media green certain line.\nWest value campaign personal address recent already. Meeting worker ball east leave or.','\n',char(10)),
+   VALUES(1, replace('Ok among class too. Fund organization throughout too
+      when. Media green certain line.\nWest value campaign personal address
+      recent already. Meeting worker ball east leave or.','\n',char(10)),
    '2017-08-31 14:12:30','books','5bdb012a-f823-4c8b-83e8-60c36c61743b');
 ```
 
 Person must exist.
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM feedback AS f
@@ -498,16 +583,21 @@ DELETE FROM feedback AS f
 
 ### Review
 
-#### Insert
+**Insert**
 
 ```sql
 INSERT INTO review
-   VALUES(1,0,replace('Outside hard discuss subject wind dark simply. Market big specific enter upon left sea.\nWatch that everyone mouth wrong. Play community agent particularly e','\n',char(10)),replace('Marriage minute again rather nice design unit. Area would scientist focus.\nFrom best experience our paper quite value. Sea yourself cause environmental account he.','\n',char(10)),57,'284388ff-f6d6-417e-b8de-be17cd8c909c');
+   VALUES(1,0,replace('Outside hard discuss subject wind dark simply. Market
+      big specific enter upon left sea.\nWatch that everyone mouth wrong. Play
+      community agent particularly e','\n',char(10)),replace('Marriage minute
+         again rather nice design unit. Area would scientist focus.\nFrom best
+         experience our paper quite value. Sea yourself cause environmental
+         account he.','\n',char(10)),57,'284388ff-f6d6-417e-b8de-be17cd8c909c');
 ```
 
 Person must exist.
 
-#### Delete
+**Delete**
 
 ```sql
 DELETE FROM review AS r
