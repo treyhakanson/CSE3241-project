@@ -16,31 +16,40 @@ SELECT * FROM table;
 ## Sample Queries
 ### Relation Algebra Queries from Checkpoint 2
 a.  Find the titles of all songs by ARTIST released before YEAR
+
     πtrack_title(σrelease_date < YEAR (σname = ARTIST ARTIST*ARTIST_ALBUMS*ALBUM*TRACK))
 
 b.  Give all the albums and their date of their checkout from a single patron (you choose how to designate the patron)
+
     πalbum_title, checkout_dateσcard_number = CARD NUMBER(PERSON*MEDIA*ALBUM)
 
 c.  List all the albums and their unique identifiers with less than 5 copies held by the library.
+
     πalbum_id, title(σcount < 5(album_idFCOUNT album_id(ALBUM*MEDIA)))
 
 d.  Give all the patrons who checked out an album by ARTIST and the albums they checked out.
+
     πfirst_name, last_name, album_title(σcheckout_date != NULL(σname = ARTIST ARTIST*ARTIST_ALBUMS*ALBUM*PERSON*MEDIA))
 
 e.  Find the total number of albums checked out by a single patron (you choose how to designate the patron)
+
     FCOUNT album_id(σcard_number = CARD NUMBERMEDIA)
 
 f.  Find the patron who has checked out the most albums and the total number of albums they have checked out.
-	  FMAX count(card_numberFCOUNT album_id(σcheckout_date != NULLMEDIA))
+
+    FMAX count(card_numberFCOUNT album_id(σcheckout_date != NULLMEDIA))
 
 ### Additional Relational Algebra Queries from Checkpoint 2
 a.  Number of feedbacks each patron as given
+
     card_numberFCOUNT  feedback_id(PERSON*FEEDBACK)
 
 b.  Average star rating for each album
-	  albumFAVERAGE stars(REVIEW*ALBUM)
+
+    albumFAVERAGE stars(REVIEW*ALBUM)
 
 c.  How many copies does each album have (physical and digital)?
+
     album_idFCOUNT media_id(ALBUM*MEDIA)
 
 ### Queries from Checkpoint 3
