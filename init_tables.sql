@@ -10,7 +10,9 @@ CREATE TABLE person (
    email VARCHAR(155) UNIQUE,
    first_name VARCHAR(155) NOT NULL,
    last_name VARCHAR(155) NOT NULL,
-   activation_date TIMESTAMP NOT NULL
+   activation_date TIMESTAMP NOT NULL,
+   num_cards INTEGER NOT NULL DEFAULT (1),
+   card_number_active BOOLEAN NOT NULL DEFAULT 1
 );
 
 CREATE TABLE artist (

@@ -1,5 +1,6 @@
 /*
  * Transaction to add a new album of tracks, by a new artist, into the database.
+ * Assuming no media is added.
  */
 BEGIN TRANSACTION;
 
@@ -39,7 +40,9 @@ COMMIT;
 
 /*
  * Transaction to remove an artist and all associated content from the database.
- * (will delete the content created by the above transaction, so run that first)
+ * Assuming no media exists.
+ * NOTE: will delete the content created by the above transaction, so run that
+ * first
  */
 BEGIN TRANSACTION;
 
@@ -80,6 +83,16 @@ DELETE FROM album
 
 -- Drop the temporary relation
 DROP TABLE temp_artist_albums;
+
+COMMIT;
+
+/*
+ * Transaction to create a new checkout for a given user
+ */
+BEGIN TRANSACTION;
+
+INSERT INTO checkout (checkout_id, checkout_date, return_date, due_date, media_id, card_number)
+   VALUES (100, date('now'), NULL, date('now', '+7 days'), 1, '18108a24-4eac-498d-a2d3-4dc4cccf405a');
 
 COMMIT;
 
