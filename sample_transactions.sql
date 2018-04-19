@@ -84,6 +84,16 @@ DROP TABLE temp_artist_albums;
 COMMIT;
 
 /*
+ * Transaction to create a new checkout for a given user
+ */
+BEGIN TRANSACTION;
+
+INSERT INTO checkout (checkout_id, checkout_date, return_date, due_date, media_id, card_number)
+   VALUES (100, date('now'), NULL, date('now', '+7 days'), 1, '18108a24-4eac-498d-a2d3-4dc4cccf405a');
+
+COMMIT;
+
+/*
  * Transaction to remove the "artist_id" column from the track table
  * (NOTE: running this won't do anything, as I already ran it to remove the
  * column before uploading; we had erroneously added an artist_id column
