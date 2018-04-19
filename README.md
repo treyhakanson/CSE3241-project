@@ -28,6 +28,10 @@ The user guide is in a separate file from this README, and can be found in:
 UserGuide.pdf
 ```
 
+## Transactions, Indexes, Views, and Other SQL
+
+All SQL scripts can be found in the `sql` directory, including annotations.
+
 ## Additional Information
 
 The following diagrams can be found in the `diagrams` directory:
